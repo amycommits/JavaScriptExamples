@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+ 
+
+ <style type="text/css">
+ .draggableSpace {
+	background-color:lavender; 
+	border-style:solid;
+	height: 80%;
+	padding: 20px;
+ }
+
+</style> 
+
+<script>
+
+
+function addItem(form) {
+	//create images
+	var link = document.createElement("a");
+	
+	var img = document.createElement("img");
+	
+	img.src = form.itemUrl.value;
+	img.id=Math.floor((Math.random() * 100000) + 1); 
+	img.draggable=true;
+	
+	img.width="150";
+	img.ondragstart = drag;
+	link.appendChild(img);
+	document.getElementById("newItem").appendChild(link);  
+	
+	//add to history
+	var histLink = document.createElement("a");
+	var imgHist = document.createElement("img");
+	imgHist.src = form.itemUrl.value;
+	imgHist.width="25";
+	histLink.appendChild(imgHist);
+	
+	var thisSeparator = document.createElement("p");
+	var thisItem = form.itemUrl.value;
+	var t = document.createTextNode(thisItem);	
+	
+	
+	
+	document.getElementById("url_link").appendChild(t);
+	document.getElementById("url_link").appendChild(histLink);
+	var thisSeparator = document.createElement("p");
+	document.getElementById("url_link").appendChild(thisSeparator);
+}
+
+
+function allowDrop(ev)
+{
+	ev.preventDefault();
+}
+
+function drag(ev)
+{
+	ev.dataTransfer.setData("Text",ev.target.id);
+}
+
+function drop(ev)
+{
+	ev.preventDefault();
+	var data=ev.dataTransfer.getData("Text");
+	ev.target.appendChild(document.getElementById(data));
+}
+</script>
+</head>
+<body>
+<div class="container-fluid">
+
+		
+			<form name="myForm" action="" method="get">
+				<p id="itemImage"> Image File Path <input type="text" id="itemUrl" name="urlOfItem" value=""> </p>
+				 <INPUT TYPE="button" NAME="button" Value="Click" onClick="addItem(this.form)"> 
+			</form>
+		
+
+<div class="row">
+	<div class="col-sm-12">
+		Options <p/>
+			<p id="newItem" class="draggableSpace" ondrop="drop(event)" ondragover="allowDrop(event)"></p>
+		
+	</div>
+<div class ="row">
+	<div class="col-sm-4">
+		 Maybe Item <p/>
+			<p id="yesItem" class="draggableSpace" ondrop="drop(event)" ondragover="allowDrop(event)"> </p>
+		
+	</div>
+	<div class="col-sm-4">
+		 Yes Item <p/>
+			<p id="noItem" class="draggableSpace" ondrop="drop(event)" ondragover="allowDrop(event)"> </p>
+		
+	</div>
+		<div class="col-sm-4">
+		 No Item <p/>
+			<p id="noItem" class="draggableSpace" ondrop="drop(event)" ondragover="allowDrop(event)"> </p>
+		
+	</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+History
+<p id="url_link"/></p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
